@@ -1,14 +1,13 @@
-package ec.app.izhikevich.spike;
+package spike;
+import util.GeneralUtils;
 
-//import ec.app.izhikevich.model.IzhikevichSolver;
-import ec.app.izhikevich.util.GeneralUtils;
-
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class ModelSpikePatternData {
 	
-	private static final double DvDtCRITERION = -30;//
-			//(Izhikevich9pModel.V_R - Izhikevich9pModel.V_PEAK) + 5; 
-			// Vrest - vpeak must be < criterion //=> e.g -> -60 - 43 = -103 ; so, criterion = -100;
-			// IMPORTANT update: apparently different calculation for different vrest vpeak combination.
 	
 	private double[] time;
 	private double[] voltage;
@@ -19,32 +18,11 @@ public class ModelSpikePatternData {
 	public ModelSpikePatternData(double[] time, double[] voltage, double[] spikeTimes) {
 		this.time = time;
 		this.voltage = voltage;
-		this.spikeTimes = GeneralUtils.roundOff(spikeTimes);
-		/*if(!hacked){
-			this.spikeTimes[14] = 186;
-			this.spikeTimes[36] = 689;
-			System.out.println("Test Hack!!");
-			System.out.println(this.spikeTimes[14]+" "+this.spikeTimes[36]);
-		hacked = true;
-		}*/
+		this.spikeTimes = GeneralUtils.roundOff(spikeTimes);		
 	}
 	public double[] getSpikeTimes() {
 		return this.spikeTimes;
 	}
-	/*
-	public double[] getSpikeTimes() {		 
-		ArrayList<Double> spikeTimes = new ArrayList<Double>();
-		double[] dvdt = getDvDt();
-		for(int i=0;i<dvdt.length;i++) {
-			//System.out.println(time[i] + "\t"+ voltage[i] + "\t"+dvdt[i]);
-			if(dvdt[i] < DvDtCRITERION ) {				
-				spikeTimes.add(time[i]);
-			}
-		}			
-		return GeneralUtils.listToArrayDouble(spikeTimes);
-		
-	}*/
-	
 	public double[] getDvDt() {		
 		double[] dvdt = new double[voltage.length-1];
 		for(int i=0; i<dvdt.length; i++) {			
@@ -136,10 +114,6 @@ public class ModelSpikePatternData {
 		for(int i=0;i<time.length;i++){
 			System.out.println(time[i]+"\t"+voltage[i]);
 		}
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

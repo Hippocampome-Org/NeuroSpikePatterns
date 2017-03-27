@@ -1,21 +1,23 @@
-package ec.app.izhikevich.spike.labels;
+package spike.labels;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import ec.app.izhikevich.evaluator.qualifier.ClassificationParameterID;
+import classifier.ClassificationParameterID;
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class SpikePatternClass {
 	public static final Set<SpikePatternComponent>TRANSIENTS = new HashSet<>(); 
 	public static final Set<SpikePatternComponent> SPIKING = new HashSet<>();
 	public static final Set<SpikePatternComponent> BURSTING = new HashSet<>();
 	public static final Set<SpikePatternComponent> STUTTERING = new HashSet<>();
-	//private static final Map<SpikePatternComponent, SpikePatternComponent> SStoTRANSmap = new HashMap<>();
 	static{
 		TRANSIENTS.add(SpikePatternComponent.D);
 		TRANSIENTS.add(SpikePatternComponent.ASP);
@@ -32,24 +34,14 @@ public class SpikePatternClass {
 		BURSTING.add(SpikePatternComponent.TSWB);
 		STUTTERING.add(SpikePatternComponent.PSTUT);
 		BURSTING.add(SpikePatternComponent.PSWB);
-		/*
-		 SStoTRANSmap.put(SpikePatternComponent.NASP, SpikePatternComponent.TSTUT);
-		//SStoTRANSmap.put(SpikePatternComponent.SLN, SpikePatternComponent.SLN);
-		SStoTRANSmap.put(SpikePatternComponent.PSTUT, SpikePatternComponent.TSTUT);
-		SStoTRANSmap.put(SpikePatternComponent.PSWB, SpikePatternComponent.TSWB);
-		*/
+		
 	}
 	
 	private SpikePatternComponent[] components;	
 	private static final int MAX_COMP = 5; //3 is the current max experimental length , pswb addition
 	private int length;
 	
-	/*public float m1_2p=-77;
-	public float m1_3p=-77;
-	public float m1_4p=-77; 
-	public float m2_4p=-77;
-*/
-	//public float[] m = new float[4];
+	
 	public Map<ClassificationParameterID, Double> classificationParameters;
 	
 	public SpikePatternClass(){
@@ -57,13 +49,9 @@ public class SpikePatternClass {
 		length = 0;
 		classificationParameters =  new HashMap<>();
 		initClassificationParameters();
-		/*for(int i=0;i<4;i++){
-			m[i]=-77;
-		}*/
+		
 	}	
-	/*
-	 * init with Double NaN: for display purposes
-	 */
+	
 	private void initClassificationParameters(){
 		ClassificationParameterID[] parmIDs = ClassificationParameterID.values();
 		for(ClassificationParameterID parmID: parmIDs){
@@ -190,41 +178,6 @@ public class SpikePatternClass {
 		}
 		
 	}
-	/*
-	public void displayAllSlopesWeird(){
-		for(int i=0;i<length;i++){
-			if(!components[i].equals(SpikePatternComponent.X)){
-				if(!components[i].equals(SpikePatternComponent.EMPTY)){
-					System.out.print(components[i]);
-					if(TRANSIENTS.contains(components[i])){
-						System.out.print(".");
-					}
-				}else{
-					System.out.print("*No_data");
-				}
-			}			
-		}
-		System.out.print("\t");
-		boolean found = false;
-		for(int i=0;i<length;i++){			
-			if(components[i].equals(SpikePatternComponent.FASP) || components[i].equals(SpikePatternComponent.WASP) ){
-				System.out.print(components[i].properties.get(PatternFeatureID.sfa_linear_m1)+"\t"
-								+components[i].properties.get(PatternFeatureID.n_sfa_isis1)+"\t");	
-				found = true;
-			}
-		}
-		if(!found){
-			System.out.print("\t\t");
-		}
-		
-		for(int i=0;i<4;i++){
-			if(m[i]!=-77)
-				System.out.print(m[i]+"\t");
-			else
-				System.out.print("no data\t");
-		}
-	}
-	*/
 	
 	
 	public boolean equals(SpikePatternClass targetClass){
@@ -258,19 +211,7 @@ public class SpikePatternClass {
 			addComponent(SpikePatternComponent.PSWB);
 		}
 	}
-	/*public void replaceSSwithTransient(){		
-		SpikePatternComponent ss = components[length-1];
-		SpikePatternComponent repWith = SStoTRANSmap.get(ss);		
-		if(this.contains(SpikePatternComponent.D)){
-			length = 0;
-			addComponent(SpikePatternComponent.D);
-			addComponent(repWith);
-		}else{
-			length = 0;			
-			addComponent(repWith);
-		}
-						
-	}*/
+	
 	public String toString(){
 		String str = "";
 		for(int i=0;i<length;i++){

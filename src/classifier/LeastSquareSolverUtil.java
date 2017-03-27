@@ -1,4 +1,4 @@
-package ec.app.izhikevich.evaluator.qualifier;
+package classifier;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,9 +15,14 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.apache.commons.math3.util.Pair;
 
-import ec.app.izhikevich.util.GeneralFileReader;
-import ec.app.izhikevich.util.GeneralUtils;
-import ec.app.izhikevich.util.StatUtil;
+import util.GeneralFileReader;
+import util.GeneralUtils;
+import util.StatUtil;
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class LeastSquareSolverUtil {
 
 	double[] X;

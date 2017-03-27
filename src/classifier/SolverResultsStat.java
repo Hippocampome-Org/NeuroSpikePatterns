@@ -1,8 +1,13 @@
-package ec.app.izhikevich.evaluator.qualifier;
+package classifier;
 
-import ec.app.izhikevich.util.GeneralUtils;
+import util.GeneralUtils;
 
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class SolverResultsStat {
 	
 	private double m1;

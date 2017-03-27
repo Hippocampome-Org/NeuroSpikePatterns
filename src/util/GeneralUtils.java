@@ -1,9 +1,13 @@
-package ec.app.izhikevich.util;
-
+package util; 
 import java.util.ArrayList;
 
 //import ec.util.MersenneTwisterFast;
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class GeneralUtils {
 
 	/*public static void shuffleArray(int[] ar)

@@ -1,5 +1,10 @@
-package ec.app.izhikevich.evaluator.qualifier;
+package classifier;
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public enum ClassificationParameterID {
 	B_1p,
 	M_2p, B_2p,

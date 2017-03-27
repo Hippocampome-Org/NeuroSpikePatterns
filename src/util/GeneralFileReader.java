@@ -1,4 +1,4 @@
-package ec.app.izhikevich.util;
+package util;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,6 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class GeneralFileReader {
 
 	public static double[] readDoublesSepByLine(String fileName) {

@@ -1,14 +1,19 @@
-package ec.app.izhikevich.spike;
+package spike;
 
 import java.util.ArrayList;
 
 //import ec.app.izhikevich.model.Izhikevich9pModel;
-import ec.app.izhikevich.util.GeneralUtils;
-import ec.app.izhikevich.util.StatUtil;
+
+import util.GeneralUtils;
+import util.StatUtil;
 
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class SpikePattern {
-	//public static final double VALID_MAX_V = 1000;
 	public static final double V_BELOW_ALLOWED_OFFSET_FROM_VMIN_DURING_SPIKE = 50;
 	public static final double 	ALLOWED_OFFSET_FROM_VREST = 50;
 	//core attributes
@@ -25,27 +30,12 @@ public class SpikePattern {
 	protected double timeMin;
 	protected double durationOfCurrentInjection;
 	
-	protected double vR;
-	//plot data --> t vs v. currently only for model; since this is only used for plotting for model spike pattern, 
-	// the exp equivalent data is not used within here.
+	protected double vR;	
 	protected ModelSpikePatternData spikePatternData;
 	
 	private BurstPattern burstPattern;
 	private double swa;
-	//new addition 7/10: model
-	//protected Izhikevich9pModel model;
-	//Initializers
-	/*
-	 * Initializer for Model through T vs. V data
-	 */
-	/*public SpikePattern(ModelSpikePatternData spikePatternData, Izhikevich9pModel model) {		
-		this(spikePatternData.getSpikeTimes(), model.getCurrent(), model.getTimeMin(), model.getDurationOfCurrent());
-		this.model = model;
-		this.setSpikePatternData(spikePatternData);
-	}*/
-	/*
-	 * 8/15/2014: to allow for 2CA models. need to figure out a way when 2CA models are used with sub ss voltage
-	 */
+	
 	public SpikePattern(){
 		
 	}
@@ -71,31 +61,6 @@ public class SpikePattern {
 		this.setAverageISI(calculateAverageISI());
 	}
 	
-	/*
-	 * 8/24/2014: new way to get spike times, using the solver:
-	 */
-	/*
-	public SpikePattern(ModelSpikePatternData spikePatternData, double[] spikeTimes, double current, double timeMin, double durationOfCurrent, double vR) {		
-		this(spikeTimes, current, timeMin, durationOfCurrent);
-		this.vR = vR;
-		this.setSpikePatternData(spikePatternData);
-	}
-	*/
-	/*
-	 * Initializer for Experimental spike through ISIs
-	 */	
-	/*public SpikePattern(ExpSpikePatternData expSpikeData) {
-		this.spikeTimes = expSpikeData.calculateSpikeTimesFromISIs();
-		this.noOfSpikes = spikeTimes.length;
-		this.currentInjected = expSpikeData.getCurrent();
-		this.timeMin = expSpikeData.getTimeMin();
-		this.durationOfCurrentInjection = expSpikeData.getCurrentDuration();
-		this.ISIs = PatternFeature.convertToDoubleArray(expSpikeData.getISIs());
-		this.setMinISI(findMinISI());
-		this.setMaxISI(findMaxISI());
-		this.setAverageFrequency(calculateAverageFiringFrequency());	
-		this.setAverageISI(calculateAverageISI());
-	}*/
 	
 	public SpikePattern(double currentInjected, double timeMin, double durationOfCurrentInjected) {
 		this.currentInjected = currentInjected;
@@ -214,17 +179,12 @@ public class SpikePattern {
 		int sampleTimeStart = (int) (timeMin);
 		int sampleTimeEnd = (int) (timeMin + durationOfCurrentInjection);		
 		int[] sampleTimes = new int[nSamples];
-	/*	MersenneTwisterFast mtf = new MersenneTwisterFast(); */
-		
 		int sampleInterval = (sampleTimeEnd - sampleTimeStart) / (nSamples + 1);
 		sampleTimes[0] = sampleTimeStart + sampleInterval;
 		for(int i=1; i<nSamples; i++) {
 			sampleTimes[i] = sampleTimes[i-1] + sampleInterval;
 		}
-	//	double[] sampleTimes = new double[] {200.0, 225.0, 300.0, 350.0, 500.0};
 		double[] sampleVolOffset = new double[sampleTimes.length];
-	//	GeneralUtils.displayArray(sampleTimes);
-	//	if(displayStat) {	System.out.println("SubTVoltOffset:");}
 		for(int i=0; i<sampleTimes.length; i++) {
 			int volt_indx = spikePatternData.getIndex(sampleTimes[i]);
 			sampleVolOffset[i] = spikePatternData.getVoltage()[volt_indx] - vR;			
@@ -239,20 +199,11 @@ public class SpikePattern {
 	}
 	public double getAsymptoticVoltage(double dvCriterion) {
 		double asymVolt = Double.MAX_VALUE;
-	/*	
-		if(this.noOfSpikes > 0) {
-			double firstSpikeTime = this.spikeTimes[0];
-			
-			double vAtst0 = this.spikePatternData.getVoltageAt((firstSpikeTime+timeMin)/2.0);
-			//System.out.println(firstSpikeTime+" ++++ "+vAtst0);
-			return vAtst0;	// only roughly correct;!!!		
-		}
-		*/
+	
 		double[] ssVoltSamples = getSubSSVoltageSamples(3);
 		double mean = StatUtil.calculateMean(ssVoltSamples);
 		double sd = StatUtil.calculateStandardDeviation(ssVoltSamples, mean);
-	//	GeneralUtils.displayArray(ssVoltSamples);
-	//	System.out.println(mean+"\t"+sd);
+	
 		if(sd<dvCriterion) {
 			return mean;
 		}else{
@@ -265,7 +216,7 @@ public class SpikePattern {
 		}
 		double asymVoltAmp = getAsymptoticVoltage();
 		double timeToreach63perc = this.spikePatternData.getTimeToReach((asymVoltAmp * 0.632) + vR); // convert offset to absolute
-	//	System.out.println("timetoReach63%\t"+timeToreach63perc);
+	
 		if(timeToreach63perc < Double.MAX_VALUE) {
 			return  timeToreach63perc - this.timeMin;
 		}else{
@@ -273,30 +224,22 @@ public class SpikePattern {
 		}
 	}
 	public boolean isValidDendriticPattern(double vOffset, double vR, double vPeak, double validMaxV) {
-		/*
-		 * ok, for now it's just valid subss check...
-		 */
+		
 		return isValidSubSSVoltPattern(vOffset, vR, vPeak, validMaxV);
 	}
 	
-	public boolean isValidPattern(double vOffset, double vR, double vPeak, double vMin, double validMaxV) {
-		/*
-		 * anything bw passive and active
-		 */
-		//is valid spikes pattern? (except burst -- not done yet) 8/18
+	public boolean isValidPattern(double vOffset, double vR, double vPeak, double vMin, double validMaxV) {		
 	
 		return isValidSubSSVoltPattern(vOffset, vR, vPeak, validMaxV);
 	}
 	
 	
-	/*
-	 * checks to make sure voltage doesnt go below vMin & vRest --> Exception: Bursting
-	 */
+	
 	public boolean isValidSpikesPattern(double vMin, double vRest) {		
 		
 		if(spikeTimes.length < 1 ||
 				(spikeTimes[spikeTimes.length-1] - this.timeMin) > (this.durationOfCurrentInjection+10)) {
-			//System.out.println("&&&&&&&&&&");
+			
 			return false;
 		}	
 		double[] voltage = spikePatternData.getVoltage();
@@ -321,7 +264,7 @@ public class SpikePattern {
 			//3.if spike generated before or after the duration of current injection:
 			if(spikeTimes[0] < timeMin || spikeTimes[spikeTimes.length - 1] > timeMin + durationOfCurrentInjection)
 			{
-			//	System.out.println("&&&&&&&&&&");
+			
 				return false;
 			}
 		}
@@ -333,7 +276,7 @@ public class SpikePattern {
 		
 		if(spikeTimes.length < 1 ||
 				(spikeTimes[spikeTimes.length-1] - this.timeMin) > (this.durationOfCurrentInjection+50)) {
-			//System.out.println("&&&&&&&&&&");
+			
 			return false;
 		}			
 		return true;
@@ -396,10 +339,7 @@ public class SpikePattern {
 		if(count < 0.5) return 0;
 		return voltageBelowVrest/count;
 	}
-	/*
-	 * voltage not to go down below to extremity!!
-	 * or up above to extremity!!
-	 */
+	
 	public boolean isValidSubSSVoltPattern(double vOffset, double vRest, double vPeak, double validMaxV) {
 		
 		double[] voltage = spikePatternData.getVoltage();
@@ -430,9 +370,7 @@ public class SpikePattern {
 			}
 		}return afterNISIs;
 	}
-	/*public void initBurstPattern(int[] nSpikeClusters){
-		this.burstPattern = new BurstPattern(nSpikeClusters, ISIs);
-	}*/
+	
 	public void initBurstPattern(double diffFactor){
 		this.burstPattern = new BurstPattern(ISIs, diffFactor, 1.5);
 	}
@@ -442,10 +380,7 @@ public class SpikePattern {
 	public ArrayList<Double> getIBIs(){
 		return burstPattern.getIBIs();
 	}
-	/*
-	 * 
-	 */
-		//Getter Setters
+	
 		public int getNoOfSpikes() {
 			return noOfSpikes;
 		}

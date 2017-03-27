@@ -1,12 +1,15 @@
-package ec.app.izhikevich.spike;
+package spike;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
-//import ec.app.izhikevich.model.Izhikevich9pModel;
-import ec.app.izhikevich.util.GeneralUtils;
-import ec.app.izhikevich.util.StatUtil;
-//import ec.util.MersenneTwisterFast;
+import util.StatUtil;
 
+
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class SpikePatternAdapting extends SpikePattern{
 
 	private int sfaISIs;	
@@ -95,11 +98,7 @@ public class SpikePatternAdapting extends SpikePattern{
 	}
 	
 	
-/*
- * ISI latencies calculated for 2nd spike of an ISI (from 2 spikes that form ISI)
- */
-// Assumption: Spike train is continuous : no silence in the middle
-	//get them in a 2 row format
+
 	public double[][] getFirstNISIsAndTheirLatenciesToSecondSpike(int n) {
 		double[] ISILatency = null;
 		double[] firstNISIs = getFirstNISIs(n);
@@ -139,11 +138,7 @@ public class SpikePatternAdapting extends SpikePattern{
 		}		
 		return latencies;
 	}
-	/*
-	 * ISI latencies calculated for 2nd spike of an ISI (from 2 spikes that form ISI)
-	 */
-	// Assumption: Spike train is continuous : no silence in the middle
-	// get it in a xy format; 
+	
 		public double[][] getFirstNISIsAndTheirLatenciesForRegression(int n) {
 			double[][] xy = null;
 			double[] firstNISIs = getFirstNISIs(n);
@@ -158,10 +153,7 @@ public class SpikePatternAdapting extends SpikePattern{
 			}
 			return xy;
 		}
-		/*
-		 * for the 2nd spike train; must use nsfaisis from the above
-		 * and no latency added (no fsl added for x axis)
-		 */
+		
 		public double[][] getFirstNISIsAndTheirLatenciesForRegression2(int previous_nsfaISIs, int n) {
 			double[][] xy = null;
 			double[] firstNISIs = getFirstNISIs2(previous_nsfaISIs, n);	
@@ -177,9 +169,7 @@ public class SpikePatternAdapting extends SpikePattern{
 			}
 			return xy;
 		}
-	/*
-	 * slopes at first n individual points
-	 */
+	
 	public double[] getFirstNIsiLatencySlopes(int n) {
 		double[] slopes = null;		
 		double[] ISILatency = getFirstNISIsAndTheirLatenciesToSecondSpike(n+1)[0];
@@ -244,89 +234,7 @@ public class SpikePatternAdapting extends SpikePattern{
 	}
 	
 	
-	/*
-	 * ISI latencies calculated for first spike of an ISI (from 2 spikes that form ISI)
-	 */
-	// Assumption: Spike train is continuous : no silence in the middle
-	/*
-	private double[] getISILatenciesToFirstSpike() {
-		double[] ISILatency = null;
-		if(ISIs!=null) {
-			ISILatency = new double[ISIs.length];
-			double ISIsoFar = 0;
-			for(int i=0; i<ISIs.length; i++) {
-				ISILatency[i] = ISIsoFar;			
-				ISIsoFar += ISIs[i];
-			}
-		}
-		return ISILatency;
-	}*/
-/*
- * 
-	// to be used to calculate R2 - WONT WORK!!
-	public double[] get_first_three_ISIlatencies() {
-		double[] first3ISILatencies = null;
-		double[] allISILatencies = getISILatenciesToSecondSpike();
-		if(allISILatencies!=null) {
-			int max_length = (allISILatencies.length < 3)? allISILatencies.length : 3;
-			first3ISILatencies = new double[max_length];
-			for(int i=0; i<first3ISILatencies.length; i++){
-				first3ISILatencies[i] = allISILatencies[i];
-			}
-		}
-		return first3ISILatencies;
-	}*/
-	/*
-public double[] getAllISILatencySlopes() {
-	double[] slopes = null;		
-	double[] ISILatency = getISILatenciesToFirstSpike();
-	if(ISILatency!=null) {
-		slopes = new double[ISILatency.length-1];
-		for(int i=0; i<ISILatency.length-1; i++){
-			slopes[i] = StatUtil.calculateSlope(ISILatency[i] , ISIs[i], ISILatency[i+1], ISIs[i+1]);
-		}
-	}
-	return slopes;
-}*/
-
-/*
- * problem specific function - ISI latencies calculated for spike 2 of 2 spikes that form ISI
- */
-	/*
-public double get_Regression_Slope_of_first_three_ISILatency() {
-	double slope = 0;		
-	double[] ISILatency = getISILatenciesToFirstSpike2();
 	
-	if(ISILatency!=null) {
-		int max_length = (ISILatency.length < 3)? ISILatency.length : 3;
-		double[] tempISI = new double[max_length];
-		double[] tempLat = new double[max_length];
-		
-		for(int i=0;i<max_length;i++) {
-			tempISI[i] = ISIs[i];
-			tempLat[i] = ISILatency[i];
-		}
-		slope = StatUtil.calculateSlopeOfRegression(tempLat, tempISI);
-	}
-	return slope;
-}
-*/
-	/*
-	 * ISI latencies calculated for 2nd spike of an ISI (from 2 spikes that form ISI)
-	 */
-	// Assumption: Spike train is continuous : no silence in the middle
-	/*	private double[] getISILatenciesToSecondSpike() {
-			double[] ISILatency = null;
-			if(ISIs!=null) {
-				ISILatency = new double[ISIs.length];
-				double LatencysoFar = this.getPreSpikeDelay();
-				for(int i=0; i<ISIs.length; i++) {
-					LatencysoFar += ISIs[i];
-					ISILatency[i] = LatencysoFar;								
-				}
-			}
-			return ISILatency;
-		}*/
 	public double getISI0(){return ISIs[0];}
 	public double getISILast() {return ISIs[ISIs.length-1];}
 	public double getFrequency0() {return frequency0;}

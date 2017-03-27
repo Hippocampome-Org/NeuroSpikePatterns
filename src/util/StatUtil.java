@@ -1,8 +1,13 @@
-package ec.app.izhikevich.util;
+package util;
 
 import java.util.ArrayList;
 
 
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class StatUtil {
 
 	public static double calculateSum(double[] array){

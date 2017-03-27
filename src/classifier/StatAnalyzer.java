@@ -1,22 +1,17 @@
-package ec.app.izhikevich.evaluator.qualifier;
+package classifier;
 
 import org.apache.commons.math3.distribution.FDistribution;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.inference.TTest;
 
-import ec.app.izhikevich.util.GeneralFileReader;
 
-
+/**
+ * @author Siva Venkadesh
+ *
+ * 3/2017
+ */
 public class StatAnalyzer {
 	public static boolean display_stats = false;
-	
-	public static void main(String[] args) {
-		String fileName = "input/other_test/sample1.txt";
-		double[] sample1 = GeneralFileReader.readDoublesSepByLine(fileName);
-		fileName = "input/other_test/sample2.txt";
-		double[] sample2 = GeneralFileReader.readDoublesSepByLine(fileName);
-		//System.out.println(isSignificantImprovement(sample1, sample2, 0.05));
-	}
 	
 	public static boolean isSignificantImprovement(double[] sample1, double[] sample2, int from, int to, double[] stats){
 		if(display_stats){
