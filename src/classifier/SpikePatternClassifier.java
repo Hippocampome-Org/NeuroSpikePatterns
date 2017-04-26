@@ -441,10 +441,10 @@ public void calculateAdaptationForNonSP(int n){
 			
 			if(solverStatLocal.getM1()>SLOPE_THRESHOLD_FT){
 				patternClass.removeLastAddedComponent();				
-				patternClass.addComponent(SpikePatternComponent.FASP);
-				patternClass.addClassificationParameter(ClassificationParameterID.M_FASP, solverStatLocal.getM1());
-				patternClass.addClassificationParameter(ClassificationParameterID.B_FASP, solverStatLocal.getC1());
-				patternClass.addClassificationParameter(ClassificationParameterID.N_ISI_cut_FASP, (double)i);
+				patternClass.addComponent(SpikePatternComponent.RASP);
+				patternClass.addClassificationParameter(ClassificationParameterID.M_RASP, solverStatLocal.getM1());
+				patternClass.addClassificationParameter(ClassificationParameterID.B_RASP, solverStatLocal.getC1());
+				patternClass.addClassificationParameter(ClassificationParameterID.N_ISI_cut_RASP, (double)i);
 				
 				
 				

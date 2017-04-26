@@ -21,14 +21,14 @@ public class SpikePatternClass {
 	static{
 		TRANSIENTS.add(SpikePatternComponent.D);
 		TRANSIENTS.add(SpikePatternComponent.ASP);
-		TRANSIENTS.add(SpikePatternComponent.FASP);
+		TRANSIENTS.add(SpikePatternComponent.RASP);
 		TRANSIENTS.add(SpikePatternComponent.TSTUT);
 		TRANSIENTS.add(SpikePatternComponent.TSWB);
 		TRANSIENTS.add(SpikePatternComponent.X);
 		
 		SPIKING.add(SpikePatternComponent.ASP);
 		SPIKING.add(SpikePatternComponent.NASP);
-		SPIKING.add(SpikePatternComponent.FASP);
+		SPIKING.add(SpikePatternComponent.RASP);
 		
 		STUTTERING.add(SpikePatternComponent.TSTUT);
 		BURSTING.add(SpikePatternComponent.TSWB);

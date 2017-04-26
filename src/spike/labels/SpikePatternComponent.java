@@ -11,7 +11,7 @@ public enum SpikePatternComponent {
 	D,SLN,
 	TSTUT,PSTUT,
 	TSWB,PSWB,
-	FASP,
+	RASP,
 	X, 
 	EMPTY;
 	
